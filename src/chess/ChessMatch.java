@@ -1,6 +1,8 @@
 package chess;
 
 import boardgame.Board;
+import boardgame.Piece;
+import boardgame.Position;
 import chess.pieces.King;
 import chess.pieces.Rock;
 
@@ -24,14 +26,46 @@ public class ChessMatch {
 		return mat;
 	}
 	
+	public ChessPiece performChessMove(ChessPosition sourcePosition, ChessPosition targetPosition) {
+		Position source = sourcePosition.toPosition();
+		Position target = targetPosition.toPosition();
+		validateSourcePosition(source);
+		Piece capturedPiece = makeMove(source, target);
+		return (ChessPiece)capturedPiece;
+	}
+	
+	private Piece makeMove(Position source, Position target) {
+		Piece p = board.removePiece(source);
+		Piece capturedPiece = board.removePiece(target);
+		board.placePiece(p, target);
+		return capturedPiece;
+	}
+	
+	private void validateSourcePosition(Position position) {
+		if (!board.thereIsAPiece(position)) {
+			throw new ChessException("There is no piece on source position");
+		}
+		
+	}
+	
 	private void placeNewPiece(char colum, int row, ChessPiece piece) {
 		board.placePiece(piece, new ChessPosition(colum, row).toPosition());
 	}
 	
 	private void initialSetup() {
-		placeNewPiece('b', 6, new Rock(board, Color.WHITE));
-		placeNewPiece('e', 8, new King(board, Color.BLACK));
-		placeNewPiece('e', 1, new King (board, Color.WHITE));
+		placeNewPiece('a', 1, new Rock(board, Color.WHITE));
+		placeNewPiece('b', 1, new Rock(board, Color.WHITE));
+		placeNewPiece('c', 1, new Rock(board, Color.WHITE));
+		placeNewPiece('d', 1, new Rock(board, Color.WHITE));
+		placeNewPiece('e', 1, new Rock(board, Color.WHITE));
+		placeNewPiece('f', 1, new King(board, Color.WHITE));
+		
+		placeNewPiece('a', 2, new Rock(board, Color.WHITE));
+		placeNewPiece('b', 2, new Rock(board, Color.WHITE));
+		placeNewPiece('c', 2, new Rock(board, Color.WHITE));
+		placeNewPiece('d', 2, new Rock(board, Color.WHITE));
+		placeNewPiece('e', 2, new Rock(board, Color.WHITE));
+		placeNewPiece('f', 2, new King(board, Color.WHITE));
 		
 	}
 
